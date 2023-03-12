@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'pages/selectapp.dart';
+import 'pages/debuginfo.dart';
 
 void main() {
   runApp(const App());
@@ -11,21 +14,25 @@ class App extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Revanced Patcher',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.dark(
-          primary: Colors.blue,
-          secondary: Colors.blue,
-          onPrimary: Colors.white,
-          onSecondary: Colors.white,
+    return ChangeNotifierProvider(
+      create: (context) => AppState(),
+      child: MaterialApp(
+        title: 'Revanced Patcher',
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.dark(
+            primary: Colors.blue,
+            secondary: Colors.blue,
+            onPrimary: Colors.white,
+            onSecondary: Colors.white,
+          ),
         ),
+        routes: {
+          '/': (context) => const HomePage(),
+          '/selectapp': (context) => const SelectAppPage(),
+          '/debuginfo':(context) => const DebugPage(),
+        },
       ),
-      routes: {
-        '/': (context) => const HomePage(),
-        '/selectapp': (context) => const SelectAppPage(),
-      },
     );
   }
 }
@@ -38,6 +45,7 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<AppState>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Revanced Patcher'),
@@ -46,19 +54,41 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Welcome to the ReVanced Patcher!  This is a work in progress, so please be patient!'),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 100),
+              child: Text(
+                'Welcome to the ReVanced Patcher!\nThis is a work in progress, so please be patient!\nClick on the respective cards to modify their settings!',
+                textAlign: TextAlign.center,
+                ),
+            ),
+            Card(
+              color: Colors.blueAccent,
+              child: ListTile(
+                title: Text('App to patch:'),
+                subtitle: Text(appState.selectedApp),
+                onTap: () {
+                  Navigator.pushNamed(context, '/selectapp');
+                },
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/selectapp');
+                  print("Compile lol idk");
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text('Begin Patching!'),
+                  child: Text('Patch Now!'),
                 ),
               ),
             ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/debuginfo');
+              },
+              child: Text('Debug Info'),
+              )
           ],
         ),
       )
