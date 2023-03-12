@@ -30,6 +30,10 @@ class App extends StatelessWidget {
   }
 }
 
+class AppState extends ChangeNotifier {
+  var selectedApp = "YouTube";
+}
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
   @override

@@ -12,12 +12,16 @@ class SelectAppPage extends StatelessWidget {
       body: Center(
         child: ListView(
           children: [
-            ListTile(
-              title: Text('HI'),
-              subtitle: Text("HIHI"),
-              onTap: () {
-                print("object");
-              },
+            Card(
+              color: Colors.redAccent,
+              child: ListTile(
+                title: Text('YouTube'),
+                subtitle: Text("Patch YouTube here!"),
+                onTap: () {
+                  print("object");
+                },
+                selectedColor: Theme.of(context).colorScheme.primary,
+              ),
             )
           ],
         )
